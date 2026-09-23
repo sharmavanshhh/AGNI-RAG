@@ -1,5 +1,9 @@
 import sys
 import os
+
+# Fix console encoding on Windows for Hindi characters
+if sys.stdout.encoding.lower() != 'utf-8':
+    sys.stdout.reconfigure(encoding='utf-8')
 import json
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
