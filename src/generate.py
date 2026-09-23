@@ -18,7 +18,7 @@ OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
 PROMPT_TEMPLATE = """You are a strict, helpful AI assistant. You must answer the user's query ONLY using the information provided in the context below. 
 
 Rules:
-1. If the context does not contain the answer, you must output EXACTLY: "not found in document". Do not try to guess or use outside knowledge.
+1. If the context does not contain the answer, you must output EXACTLY: "I can only answer questions related to Agni Ki Udaan." Do not try to guess or use outside knowledge.
 2. CRITICAL: You MUST answer in the EXACT SAME LANGUAGE as the user's query. If the query is in English, you must translate the information from the Hindi context and write your final answer in English. If the query is in Hindi, answer in Hindi.
 3. Be concise and accurate.
 
@@ -80,7 +80,7 @@ def generate_answer(query, retrieved_chunks):
     Generate an answer using the configured LLM provider.
     """
     if not retrieved_chunks:
-        return "not found in document", []
+        return "I can only answer questions related to Agni Ki Udaan.", []
         
     context_parts = []
     for i, chunk in enumerate(retrieved_chunks):
@@ -100,7 +100,7 @@ def generate_answer(query, retrieved_chunks):
         answer = f"Error calling {LLM_PROVIDER} API: {str(e)}"
         
     citations = []
-    if "not found in document" not in answer.lower() and not answer.startswith("Error"):
+    if "I can only answer questions related to Agni Ki Udaan." not in answer and not answer.startswith("Error"):
         # Just use the top chunk as the primary source for simplicity in this baseline
         top_chunk = retrieved_chunks[0]
         citations.append({
