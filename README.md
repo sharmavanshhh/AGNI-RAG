@@ -97,7 +97,13 @@ To run the RAG pipeline on the 6 required test queries and generate the outputs:
 ```bash
 python scripts/run_test_queries.py
 ```
-*(The generated answers and citations are automatically saved to [outputs/test_query_results.md](outputs/test_query_results.md). You can view this file in the repository to see the final results!)*
+*(The generated answers and citations are automatically saved to [outputs/test_query_results.md](outputs/test_query_results.md).)*
+
+To run the automated retrieval evaluation (which checks Top-K Hit Rate against ground-truth chunks):
+```bash
+python scripts/evaluate_retrieval.py
+```
+*(The evaluation results are recorded in [outputs/evaluation_results.md](outputs/evaluation_results.md).)*
 
 To run a single custom query or enter Interactive Mode:
 ```bash
@@ -105,3 +111,4 @@ python scripts/cli.py "पोखरण-II में कलाम की क्�
 # Or for interactive mode:
 python scripts/cli.py
 ```
+*(See a recorded example of our interactive, out-of-domain conversational CLI in [outputs/cli_demo.md](outputs/cli_demo.md).)*

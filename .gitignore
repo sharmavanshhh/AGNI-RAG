@@ -6,5 +6,5 @@ chroma_db/
 .ipynb_checkpoints/
 data/processed/
 outputs/*
-!outputs/test_query_results.md
+!outputs/*.md
 scratch_*
