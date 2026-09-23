@@ -21,18 +21,28 @@ Processing Hindi PDFs requires specialized care to prevent "mojibake" and corrup
 - **Embedding Model**: We utilized `BAAI/bge-m3`, a state-of-the-art multilingual embedding model via `sentence-transformers`, which handles semantic nuances in Hindi significantly better than English-first models.
 - **Hybrid Retrieval**: We use Reciprocal Rank Fusion (RRF) to combine dense embeddings with a BM25 sparse index. This is critical for cross-lingual queries (e.g., English queries on Hindi text) and exact-match acronyms (e.g., "SLV-III", "MIT").
 
-## 4. Future Improvements
+## 4. Multi-Provider LLM Integration
+
+Our pipeline is entirely model-agnostic and supports local and cloud-based LLMs out of the box. 
+By setting variables in the `.env` file, you can instantly switch between:
+- **Ollama (Default)**: Fully local, private inference (`LLM_PROVIDER=ollama`)
+- **OpenAI**: (`LLM_PROVIDER=openai`)
+- **Anthropic**: (`LLM_PROVIDER=anthropic`)
+
+See the `Configuration` section below to set the provider and exact model string.
+
+## 5. Future Improvements
 
 With more time, the pipeline could be hardened further:
 1. **Cross-Encoder Re-Ranking**: Currently, we use RRF to merge Dense + BM25 results. Adding a multilingual Cross-Encoder (like `bge-reranker-v2-m3`) as a final stage would significantly improve the precision of the top-3 chunks.
 2. **Improved Table Parsing OCR**: Complex multi-line headers or merged cells in the PDF occasionally cause column misalignment in `PyMuPDF`. Leveraging a vision-language model or `pdfplumber`'s visual debugger could yield cleaner row extractions.
 3. **Confidence Calibration**: The prompt has a strict fallback (`"not found in document"`), but local LLMs can still hallucinate if the retrieved context is marginally relevant. We would implement a verification step or require the LLM to quote the exact substring it used.
 
-## 5. How to Run It
+## 6. How to Run It
 
 ### Prerequisites
 - Python 3.9+
-- A local installation of [Ollama](https://ollama.com/) with the `llama3` model pulled (`ollama run llama3`).
+- *(Optional)* A local installation of [Ollama](https://ollama.com/) if running locally.
 
 ### Setup Instructions
 1. Clone the repository and navigate into it:
@@ -53,6 +63,14 @@ With more time, the pipeline could be hardened further:
    pip install -r requirements.txt
    ```
 
+### Configuration (Optional)
+If you want to use OpenAI or Anthropic instead of the default local Ollama model, rename `.env.example` to `.env` and configure your keys and provider:
+```env
+LLM_PROVIDER=openai           # Options: ollama, openai, anthropic
+LLM_MODEL=gpt-4o-mini         # e.g., llama3, gpt-4o, claude-3-haiku-20240307
+OPENAI_API_KEY=sk-xxxx...
+```
+
 ### Execution
 To rebuild the index from scratch (Ingest → Clean → Chunk → Embed):
 ```bash
@@ -65,7 +83,9 @@ python scripts/run_test_queries.py
 ```
 *(The results will be saved to `outputs/test_query_results.md`)*
 
-To run a single custom query:
+To run a single custom query or enter Interactive Mode:
 ```bash
-python src/pipeline.py "पोखरण-II में कलाम की क्या भूमिका थी?"
+python scripts/cli.py "पोखरण-II में कलाम की क्या भूमिका थी?"
+# Or for interactive mode:
+python scripts/cli.py
 ```
