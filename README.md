@@ -76,12 +76,13 @@ To rebuild the index from scratch (Ingest → Clean → Chunk → Embed):
 ```bash
 python scripts/rebuild_index.py
 ```
+*(This will process the raw PDF and generate the persistent ChromaDB)*
 
 To run the RAG pipeline on the 6 required test queries and generate the outputs:
 ```bash
 python scripts/run_test_queries.py
 ```
-*(The results will be saved to `outputs/test_query_results.md`)*
+*(The generated answers and citations are automatically saved to [outputs/test_query_results.md](outputs/test_query_results.md). You can view this file in the repository to see the final results!)*
 
 To run a single custom query or enter Interactive Mode:
 ```bash
