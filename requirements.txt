@@ -1,0 +1,8 @@
+pdfplumber
+PyMuPDF
+sentence-transformers
+chromadb
+rank_bm25
+python-dotenv
+openai
+anthropic
