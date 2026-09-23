@@ -19,7 +19,7 @@ PROMPT_TEMPLATE = """You are a strict, helpful AI assistant. You must answer the
 
 Rules:
 1. If the context does not contain the answer, you must output EXACTLY: "not found in document". Do not try to guess or use outside knowledge.
-2. Answer in the same language as the query.
+2. CRITICAL: You MUST answer in the EXACT SAME LANGUAGE as the user's query. If the query is in English, you must translate the information from the Hindi context and write your final answer in English. If the query is in Hindi, answer in Hindi.
 3. Be concise and accurate.
 
 Context:
